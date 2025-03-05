@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Action vs No-Action Words</title>
+    <style>
+        body {
+            background-color: black;
+            color: gold;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 80;
+            padding: 0;
+        }
+        .navbar {
+            background-color: gold;
+            padding: 15px;
+        }
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .word-table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            margin-top: 80px;
+        }
+        td {
+            border: 2px solid gold;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 18px;
+        }
+        td:hover {
+            background-color: gold;
+            color: black;
+        }
+        #result-box {
+            position: fixed;
+            top: 80px; /* Keeps it below the navbar */
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px;
+            border: 3px solid gold;
+            background-color: white;
+            color: black;
+            font-size: 28px; /* Increased font size */
+            font-weight: bold;
+            display: inline-block;
+            min-width: 400px; /* Increased width */
+            border-radius: 10px;
+            z-index: 1000; /* Ensures it stays on top */
+          
+        }
+        .social-icons {
+            margin-top: 20px;
+        }
+        .social-icons a {
+            color: gold;
+            font-size: 24px;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .footer {
+            background-color: gold;
+            color: black;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="action.html">Action vs No-Action</a>
+        <a href="ice-method.html">ICE Method</a>
+        <a href="accuracy-formula.html">Accuracy Formula</a>
+        <a href="ta-sheet.html">TA Sheet</a>
+    </div>
+
+    <h1>Action vs No-Action Words</h1>
+    <table class="word-table" id="wordTable"></table>
+    <div id="result-box">Click a word to see its type</div>
+
+    <div class="social-icons">
+        <a href="https://facebook.com/englishparadisegaurav" target="_blank">🔗 Facebook</a>
+        <a href="https://www.youtube.com/@gaurav0585/" target="_blank">🔗 Youtube</a>
+        <a href="https://instagram.com/gauravchourasiyaofficial" target="_blank">🔗 Instagram</a>
+    </div>
+    
+    <footer>
+        <p>© 2025 Gaurav Chourasiya | Developed by Gaurav Chourasiya</p>
+    </footer>
+
+    <script>
+        const actionWords = [
+  "Accept", "Achieve", "Add", "Admire", "Advise", "Agree", "Allow", "Answer", "Appear", "Apply",
+  "Argue", "Arrange", "Arrive", "Ask", "Attack", "Avoid", "Bake", "Begin", "Behave", "Believe",
+  "Belong", "Break", "Bring", "Build", "Burn", "Buy", "Call", "Carry", "Catch", "Change",
+  "Choose", "Clean", "Climb", "Close", "Collect", "Come", "Complain", "Complete", "Continue", "Control",
+  "Cook", "Copy", "Count", "Cover", "Cry", "Cut", "Dance", "Decide", "Deliver", "Demand",
+  "Depend", "Describe", "Destroy", "Develop", "Die", "Discuss", "Distribute", "Do", "Draw", "Drink",
+  "Drive", "Drop", "Eat", "Employ", "Enjoy", "Explain", "Fall", "Feed", "Feel", "Fight",
+  "Find", "Fly", "Forget", "Forgive", "Get", "Give", "Go", "Grow", "Hang", "Have",
+  "Hear", "Help", "Hide", "Hold", "Hope", "Hurt", "Identify", "Ignore", "Imagine", "Improve",
+  "Include", "Inform", "Introduce", "Invite", "Join", "Jump", "Keep", "Kick", "Kill", "Kiss",
+  "Know", "Laugh", "Learn", "Leave", "Lend", "Like", "Listen", "Live", "Look", "Lose",
+  "Love", "Make", "Manage", "Mark", "Marry", "Measure", "Meet", "Melt", "Mention", "Move",
+  "Name", "Need", "Notice", "Observe", "Offer", "Open", "Order", "Organize", "Paint", "Participate",
+  "Pay", "Perform", "Plan", "Play", "Please", "Point", "Prepare", "Present", "Press", "Prevent",
+  "Produce", "Protect", "Provide", "Pull", "Punish", "Push", "Qualify", "Question", "Rain", "Reach",
+  "Read", "Realize", "Receive", "Recognize", "Recommend", "Reduce", "Refuse", "Regret", "Relate", "Relax",
+  "Rely", "Remember", "Repair", "Repeat", "Replace", "Reply", "Report", "Represent", "Request", "Require",
+  "Rescue", "Resign", "Respect", "Rest", "Result", "Retire", "Return", "Ride", "Ring", "Rise",
+  "Risk", "Roll", "Run", "Save", "Say", "See", "Seek", "Select", "Sell", "Send",
+  "Serve", "Set", "Shake", "Share", "Shine", "Shoot", "Show", "Shut", "Sing", "Sit",
+  "Sleep", "Smile", "Solve", "Speak", "Spend", "Stand", "Start", "Stay", "Steal", "Stop",
+  "Study", "Succeed", "Suffer", "Suggest", "Supply", "Support", "Suppose", "Surprise", "Surround", "Suspect",
+  "Swim", "Take", "Talk", "Teach", "Tell", "Thank", "Think", "Throw", "Touch", "Train",
+  "Travel", "Treat", "Try", "Turn", "Understand", "Use", "Visit", "Wait", "Wake", "Walk",
+  "Want", "Warn", "Watch", "Wear", "Win", "Wish", "Work", "Worry", "Write","Run", "Jump", "Sing", "Write", "Dance", "Speak", "Walk", "Throw", "Climb", "Kick", "Drive", "Read", "Swim", "Lift", "Fly", "Shout", "Push", "Pull", "Catch", "Build", "Cook", "Listen", "Watch", "Paint", "Type", "Jog", "Smile", "Think", "Dig", "Buy", "Sell", "Ride", "Talk", "Scream", "Plan", "Jump", "Code", "Sew", "Arrange", "Play", "Create", "Design", "Invent", "Explore", "Laugh", "Guess", "Eat", "Drink", "Teach", "Learn","Clean"];
+        
+        const noActionWords = [ "Teacher","Engineer", "Nurse", "Pilot", "Chef", "Artist", "Singer", "Dancer", "Writer", "Happy", "Sad", "Tired", "Weak", "Strong", "Brave", "Calm", "Honest", "Lazy", "Friendly", "Tall", "Short", "Soft", "Hard", "Warm", "Cold", "Rough", "Smooth", "Bright", "Dark", "Heavy", "Light", "Smart", "Dull", "Fast", "Slow", "Young", "Old", "Rich", "Poor", "Beautiful", "Ugly", "Kind", "Cruel", "Good", "Bad", "Polite", "Rude", "Busy", "Free",  "Dirty", "Anxious", "Arrogant", "Awkward", "Balanced", "Bitter", "Blind", "Blissful", "Bored", "Bright", "Cautious",
+"Charming", "Cheerful", "Clumsy", "Confident", "Confused", "Content", "Courageous", "Creative", "Curious", "Daring",
+"Defensive", "Delicate", "Determined", "Doubtful", "Eager", "Efficient", "Elegant", "Energetic", "Enthusiastic", "Famous",
+"Faithful", "Fearless", "Foolish", "Forgetful", "Generous", "Gentle", "Gloomy", "Grateful", "Greedy", "Handsome",
+"Harsh", "Hesitant", "Humble", "Humorous", "Ignorant", "Imaginative", "Impatient", "Independent", "Innocent", "Intelligent",
+"Jealous", "Jolly", "Lively", "Lonely", "Loyal", "Lucky", "Mature", "Miserable", "Modest", "Mysterious",
+"Nervous", "Notable", "Obedient", "Optimistic", "Organized", "Outstanding", "Patient", "Peaceful", "Persistent", "Popular",
+"Powerful", "Proud", "Quick-witted", "Realistic", "Reliable", "Resourceful", "Responsible", "Restless", "Sarcastic", "Selfish",
+"Sensible", "Serious", "Sharp", "Silly", "Sincere", "Sleepy", "Sociable", "Sophisticated", "Spontaneous", "Stubborn",
+"Sympathetic", "Tense", "Thoughtful", "Timid", "Trustworthy", "Uncertain", "Understanding", "Unforgiving", "Unique", "Witty"
+];
+        
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+    }
+}
+
+function generateTable() {
+    let table = document.getElementById("wordTable");
+    let words = [...actionWords, ...noActionWords]; // Combine both lists
+    shuffleArray(words); // Shuffle words randomly
+
+    let rows = Math.ceil(words.length / 5); // 5 words per row
+
+    for (let i = 0; i < rows; i++) {
+        let row = table.insertRow();
+        for (let j = 0; j < 5; j++) {
+            let wordIndex = i * 5 + j;
+            if (wordIndex < words.length) {
+                let cell = row.insertCell();
+                cell.innerText = words[wordIndex];
+                cell.onclick = function () { showResult(words[wordIndex]); };
+            }
+        }
+    }
+}
+
+        
+function showResult(word) {
+    let resultBox = document.getElementById("result-box");
+    let isAction = actionWords.includes(word);
+    
+    resultBox.innerHTML = `${word} is ${isAction ? 'an' : 'a'} <span style="color: ${isAction ? 'blue' : 'red'}; font-size: 32px; font-weight: bold;"> 
+        ${isAction ? 'Action Word' : 'No-Action Word'}</span>`;
+
+}
+
+        
+        generateTable();
+    </script>
+</body>
+</html>

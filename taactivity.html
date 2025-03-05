@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TA Sheet</title>
+    <style>
+        body {
+            background-color: black;
+            color: gold;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: gold;
+            padding: 15px;
+        }
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .container {
+            padding: 20px;
+        }
+        .footer {
+            background-color: gold;
+            color: black;
+            padding: 10px;
+            margin-top: 180px;
+        }
+        .association-section {
+            background-color: #222;
+            padding: 20px;
+            margin: 20px auto;
+            width: 80%;
+            border-radius: 10px;
+            border: 2px solid gold;
+        }
+        .input-box {
+            width: 40%;
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid gold;
+            background-color: black;
+            color: gold;
+            text-align: center;
+        }
+        .result-container {
+    margin-top: 30px;
+    padding: 20px;
+    border: 3px solid gold;
+    background-color: black;
+    color: rgb(253, 253, 251);
+    font-size: 32px; /* Bigger font */
+    font-weight: bold;
+    text-align: center;
+    display: block; /* Moves it to a new line */
+    width: 80%; /* Adjust width */
+    margin: 20px auto; /* Center the box */
+    border-radius: 12px;
+}
+
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="action.html">Action vs No-Action</a>
+        <a href="ice-method.html">ICE Method</a>
+        <a href="accuracy-formula.html">Accuracy Formula</a>
+        <a href="ta-sheet.html">TA Sheet</a>
+        <a href="taactivity.html">TA Activity</a>
+    </div>
+
+    <div class="container">
+        <h1>TA Sheet - Action Words & Time Words Association</h1>
+        <div class="association-section">
+            <h2>Enter an Action or Time Word</h2>
+            <input type="text" id="wordInput" class="input-box" placeholder="Type an Action or Time Word..." onkeyup="findAssociation()">
+            <div class="result-container" id="result-box">Your Result Will Appear Here</div>
+
+        </div>
+    </div>
+    
+    <footer class="footer">
+        <p>© 2025 Gaurav Chourasiya | Developed by Gaurav Chourasiya</p>
+    </footer>
+
+    <script>
+        const associationMap = 
+            {
+  "drive": "do, does, did, can, may, must, might, will, would, should, could",
+  "drove": "did",
+  "driven": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "drives": "do, does",
+  "driving": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+           
+  "dance": "do, does, did, can, may, must, might, will, would, should, could",
+  "danced 2": "did",
+  "danceed 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "dances": "do, does",
+  "dancing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "talk": "do, does, did, can, may, must, might, will, would, should, could",
+  "talked 2": "did",
+  "talked 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "talks": "do, does",
+  "talking": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "teach": "do, does, did, can, may, must, might, will, would, should, could",
+  "taught 2": "did",
+  "taught 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "teaches": "do, does",
+  "teaching": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "tell": "do, does, did, can, may, must, might, will, would, should, could",
+  "told 2": "did",
+  "told 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "tells": "do, does",
+  "telling": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "thank": "do, does, did, can, may, must, might, will, would, should, could",
+  "thanked 2": "did",
+  "thanked 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "thanks": "do, does",
+  "thanking": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "think": "do, does, did, can, may, must, might, will, would, should, could",
+  "thought 2": "did",
+  "thought 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "thinks": "do, does",
+  "thinking": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "throw": "do, does, did, can, may, must, might, will, would, should, could",
+  "threw": "did",
+  "thrown": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "throws": "do, does",
+  "throwing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "touch": "do, does, did, can, may, must, might, will, would, should, could",
+  "touched 2": "did",
+  "touched 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "touches": "do, does",
+  "touching": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "train": "do, does, did, can, may, must, might, will, would, should, could",
+  "trained 2": "did",
+  "trained 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "trains": "do, does",
+  "training": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "travel": "do, does, did, can, may, must, might, will, would, should, could",
+  "traveled 2": "did",
+  "traveled 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "travels": "do, does",
+  "traveling": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "treat": "do, does, did, can, may, must, might, will, would, should, could",
+  "treated 2": "did",
+  "treated 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "treats": "do, does",
+  "treating": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "try": "do, does, did, can, may, must, might, will, would, should, could",
+  "tried 2": "did",
+  "tried 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "tries": "do, does",
+  "trying": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "turn": "do, does, did, can, may, must, might, will, would, should, could",
+  "turned 2": "did",
+  "turned 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "turns": "do, does",
+  "turning": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+               
+  "save": "do, does, did, can, may, must, might, will, would, should, could",
+  "saved 2": "did",
+  "saved 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "saves": "do, does",
+  "saving": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "say": "do, does, did, can, may, must, might, will, would, should, could",
+  "said 2": "did",
+  "said 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "says": "do, does",
+  "saying": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "see": "do, does, did, can, may, must, might, will, would, should, could",
+  "saw": "did",
+  "seen": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "sees": "do, does",
+  "seeing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "sell": "do, does, did, can, may, must, might, will, would, should, could",
+  "sold 2": "did",
+  "sold 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "sells": "do, does",
+  "selling": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "send": "do, does, did, can, may, must, might, will, would, should, could",
+  "sent 2": "did",
+  "sent 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "sends": "do, does",
+  "sending": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "shake": "do, does, did, can, may, must, might, will, would, should, could",
+  "shook": "did",
+  "shaken": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "shakes": "do, does",
+  "shaking": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "shout": "do, does, did, can, may, must, might, will, would, should, could",
+  "shouted 2": "did",
+  "shouted 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "shouts": "do, does",
+  "shouting": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "sing": "do, does, did, can, may, must, might, will, would, should, could",
+  "sang": "did",
+  "sung": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "sings": "do, does",
+  "singing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "sit": "do, does, did, can, may, must, might, will, would, should, could",
+  "sat 2": "did",
+  "sat 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "sits": "do, does",
+  "sitting": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "sleep": "do, does, did, can, may, must, might, will, would, should, could",
+  "slept 2": "did",
+  "slept 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "sleeps": "do, does",
+  "sleeping": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "speak": "do, does, did, can, may, must, might, will, would, should, could",
+  "spoke": "did",
+  "spoken": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "speaks": "do, does",
+  "speaking": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "stand": "do, does, did, can, may, must, might, will, would, should, could",
+  "stood 2": "did",
+  "stood 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "stands": "do, does",
+  "standing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "steal": "do, does, did, can, may, must, might, will, would, should, could",
+  "stole": "did",
+  "stolen": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "steals": "do, does",
+  "stealing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",    
+ 
+  "manage": "do, does, did, can, may, must, might, will, would, should, could",
+  "managed 2": "did",
+  "managed 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "manages": "do, does",
+  "managing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "measure": "do, does, did, can, may, must, might, will, would, should, could",
+  "measured 2": "did",
+  "measured 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "measures": "do, does",
+  "measuring": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "meet": "do, does, did, can, may, must, might, will, would, should, could",
+  "met 2": "did",
+  "met 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "meets": "do, does",
+  "meeting": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "move": "do, does, did, can, may, must, might, will, would, should, could",
+  "moved 2": "did",
+  "moved 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "moves": "do, does",
+  "moving": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "notice": "do, does, did, can, may, must, might, will, would, should, could",
+  "noticed 2": "did",
+  "noticed 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "notices": "do, does",
+  "noticing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "need": "do, does, did, can, may, must, might, will, would, should, could",
+  "needed 2": "did",
+  "needed 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "needs": "do, does",
+  "needing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "name": "do, does, did, can, may, must, might, will, would, should, could",
+  "named 2": "did",
+  "named 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "names": "do, does",
+  "naming": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "narrate": "do, does, did, can, may, must, might, will, would, should, could",
+  "narrated 2": "did",
+  "narrated 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "narrates": "do, does",
+  "narrating": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "note": "do, does, did, can, may, must, might, will, would, should, could",
+  "noted 2": "did",
+  "noted 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "notes": "do, does",
+  "noting": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "reach": "do, does, did, can, may, must, might, will, would, should, could",
+  "reached 2": "did",
+  "reached 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "reaches": "do, does",
+  "reaching": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "realize": "do, does, did, can, may, must, might, will, would, should, could",
+  "realized 2": "did",
+  "realized 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "realizes": "do, does",
+  "realizing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "recognize": "do, does, did, can, may, must, might, will, would, should, could",
+  "recognized 2": "did",
+  "recognized 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "recognizes": "do, does",
+  "recognizing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "recommend": "do, does, did, can, may, must, might, will, would, should, could",
+  "recommended 2": "did",
+  "recommended 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "recommends": "do, does",
+  "recommending": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "reduce": "do, does, did, can, may, must, might, will, would, should, could",
+  "reduced 2": "did",
+  "reduced 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "reduces": "do, does",
+  "reducing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "refuse": "do, does, did, can, may, must, might, will, would, should, could",
+  "refused 2": "did",
+  "refused 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "refuses": "do, does",
+  "refusing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "regret": "do, does, did, can, may, must, might, will, would, should, could",
+  "regretted 2": "did",
+  "regretted 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "regrets": "do, does",
+  "regretting": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "relax": "do, does, did, can, may, must, might, will, would, should, could",
+  "relaxed 2": "did",
+  "relaxed 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "relaxes": "do, does",
+  "relaxing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "replace": "do, does, did, can, may, must, might, will, would, should, could",
+  "replaced 2": "did",
+  "replaced 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "replaces": "do, does",
+  "replacing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "respond": "do, does, did, can, may, must, might, will, would, should, could",
+  "responded 2": "did",
+  "responded 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "responds": "do, does",
+  "responding": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "buy": "do, does, did, can, may, must, might, will, would, should, could",
+  "bought 2": "did",
+  "bought 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "buys": "do, does",
+  "buying": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+  
+  "bring": "do, does, did, can, may, must, might, will, would, should, could",
+  "brought 2": "did",
+  "brought 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "brings": "do, does",
+  "bringing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "make": "do, does, did, can, may, must, might, will, would, should, could",
+  "made 2": "did",
+  "made 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "makes": "do, does",
+  "making": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+            
+  "deocrate": "do, does, did, can, may, must, might, will, would, should, could",
+  "deocrate 2": "did",
+  "deocrate 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "deocrates": "do, does",
+  "deocrating": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "deocrate": "do, does, did, can, may, must, might, will, would, should, could",
+  "deocrate 2": "did",
+  "deocrate 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "deocrates": "do, does",
+  "deocrating": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "watch": "do, does, did, can, may, must, might, will, would, should, could",
+  "watched 2": "did",
+  "watched 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "watches": "do, does",
+  "watching": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+                 
+  "read": "do, does, did, can, may, must, might, will, would, should, could",
+  "read 2": "did",
+  "read 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "reads": "do, does",
+  "reading": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "walk": "do, does, did, can, may, must, might, will, would, should, could",
+  "walked 2": "did",
+  "walked 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "walks": "do, does",
+  "walking": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "run": "do, does, did, can, may, must, might, will, would, should, could",
+  "ran": "did",
+  "run 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "runs": "do, does",
+  "running": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "write": "do, does, did, can, may, must, might, will, would, should, could",
+  "wrote": "did",
+  "written": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "writes": "do, does",
+  "writing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "eat": "do, does, did, can, may, must, might, will, would, should, could",
+  "ate": "did",
+  "eaten": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "eats": "do, does",
+  "eating": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "drink": "do, does, did, can, may, must, might, will, would, should, could",
+  "drank": "did",
+  "drunk": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "drinks": "do, does",
+  "drinking": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "go": "do, does, did, can, may, must, might, will, would, should, could",
+  "went": "did",
+  "gone": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "goes": "do, does",
+  "going": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "see": "do, does, did, can, may, must, might, will, would, should, could",
+  "saw": "did",
+  "seen": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "sees": "do, does",
+  "seeing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "take": "do, does, did, can, may, must, might, will, would, should, could",
+  "took": "did",
+  "taken": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "takes": "do, does",
+  "taking": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "give": "do, does, did, can, may, must, might, will, would, should, could",
+  "gave": "did",
+  "given": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "gives": "do, does",
+  "giving": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "come": "do, does, did, can, may, must, might, will, would, should, could",
+  "came": "did",
+  "come 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "comes": "do, does",
+  "coming": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "swim": "do, does, did, can, may, must, might, will, would, should, could",
+  "swam": "did",
+  "swum": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "swims": "do, does",
+  "swimming": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+  
+  "run": "do, does, did, can, may, must, might, will, would, should, could",
+  "ran": "did",
+  "run 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "runs": "do, does",
+  "running": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+ 
+  "write": "do, does, did, can, may, must, might, will, would, should, could",
+  "wrote": "did",
+  "written": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "writes": "do, does",
+  "writing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+  
+  "jump": "do, does, did, can, may, must, might, will, would, should, could",
+  "jumped 2": "did",
+  "jumped 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "jumps": "do, does",
+  "jumping": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+  
+  "gain": "do, does, did, can, may, must, might, will, would, should, could",
+  "gained 2": "did",
+  "gained 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "gains": "do, does",
+  "gaining": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "gather": "do, does, did, can, may, must, might, will, would, should, could",
+  "gathered 2": "did",
+  "gathered 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "gathers": "do, does",
+  "gathering": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "gaze": "do, does, did, can, may, must, might, will, would, should, could",
+  "gazed 2": "did",
+  "gazed 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "gazes": "do, does",
+  "gazing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "glance": "do, does, did, can, may, must, might, will, would, should, could",
+  "glanced 2": "did",
+  "glanced 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "glances": "do, does",
+  "glancing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "grab": "do, does, did, can, may, must, might, will, would, should, could",
+  "grabbed 2": "did",
+  "grabbed 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "grabs": "do, does",
+  "grabbing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "grind": "do, does, did, can, may, must, might, will, would, should, could",
+  "ground 2": "did",
+  "ground 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "grinds": "do, does",
+  "grinding": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "grow": "do, does, did, can, may, must, might, will, would, should, could",
+  "grew": "did",
+  "grown": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "grows": "do, does",
+  "growing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+
+  "guess": "do, does, did, can, may, must, might, will, would, should, could",
+  "guessed 2": "did",
+  "guessed 3": "have, has, had, may have, might have, must have, should have, could have, would have, is, am, are, were, was",
+  "guesses": "do, does",
+  "guessing": "is, am, are, was, were, will be, would be, should be, may be, might be, must be, can be, could be, have been, has been, had been",
+        };
+        
+        function findAssociation() {
+            let word = document.getElementById("wordInput").value.toLowerCase();
+            let result = associationMap[word] || "No association found";
+            document.getElementById("result-box").innerText = result;
+        }
+    </script>
+</body>
+</html>

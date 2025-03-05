@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Dynamic Learning</title>
+    <style>
+        body {
+            background-color: black;
+            color: gold;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: gold;
+            padding: 15px;
+        }
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .slider {
+            width: 100%;
+            margin: 20px auto;
+            overflow: hidden;
+            border-radius: 10px;
+            position: relative;
+        }
+        .slides {
+            display: flex;
+            width: 50%;
+            animation: slide 15s linear infinite;
+        }
+        .slides img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        @keyframes slide {
+            0% { transform: translateX(0%); }
+            33.33% { transform: translateX(-100%); }
+            66.66% { transform: translateX(-200%); }
+            100% { transform: translateX(0%); }
+        }
+        .social-icons {
+            margin-top: 20px;
+        }
+        .social-icons a {
+            color: gold;
+            font-size: 24px;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .footer {
+            background-color: gold;
+            color: black;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="action.html">Action vs No-Action</a>
+        <a href="ice-method.html">ICE Method</a>
+        <a href="accuracy-formula.html">Accuracy Formula</a>
+        <a href="ta-sheet.html">TA Sheet</a>
+        <a href="taactivity.html">TA Activity</a>
+    </div>
+
+    <h1>Welcome to English Bol</h1>
+    <p>Improve your spoken English and communication skills.</p>
+
+    <div class="slider">
+        <div class="slides">
+            <img src="image1.png" alt="Learning Slide 1">
+            <img src="image2.png" alt="Learning Slide 2">
+            <img src="image3.png" alt="Learning Slide 3">
+        </div>
+    </div>
+
+    <div class="social-icons">
+        <a href="https://facebook.com/englishparadisegaurav" target="_blank">🔗 Facebook</a>
+        <a href="https://www.youtube.com/@gaurav0585/" target="_blank">🔗 Youtube</a>
+        <a href="https://instagram.com/gauravchourasiyaofficial" target="_blank">🔗 Instagram</a>
+    </div>
+    
+    </div>
+    <footer>
+        <p>© 2025 Gaurav Chourasiya | Developed by Gaurav Chourasiya</p>
+    </footer>
+</body>
+</html>
+

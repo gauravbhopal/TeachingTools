@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accuracy Formula</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: gold;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .navbar {
+            background-color: gold;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+        }
+        .left-section, .right-section {
+            width: 45%;
+        }
+        textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 18px;
+            border-radius: 5px;
+        }
+        textarea {
+            border: 2px solid gold;
+            background-color: #222;
+            color: white;
+        }
+        button {
+            background-color: gold;
+            color: black;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+        .result-box {
+            border: 2px solid gold;
+            padding: 15px;
+            background-color: #222;
+            color: white;
+            margin: 10px 0;
+            font-size: 18px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        #result-box {
+            border: 3px solid gold;
+            background-color: yellow;
+            color: green;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 20px;
+            min-width: 300px;
+            text-align: center;
+            border-radius: 10px;
+        }
+        .clear-btn {
+            margin-top: 20px;
+            padding: 12px 20px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .clear-btn:hover {
+            background-color: darkred;
+        }
+        /* Sense Box Styling */
+        #sense-box {
+            border: 3px solid gold;
+            background-color: yellow;
+            color: blue;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 20px;
+            min-width: 300px;
+            text-align: center;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .footer {
+            background-color: gold;
+            color: black;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Menu -->
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="action.html">Action vs No-Action</a>
+        <a href="ice-method.html">ICE Method</a>
+        <a href="accuracy-formula.html">Accuracy Formula</a>
+        <a href="ta-sheet.html">TA Sheet</a>
+        <a href="taactivity.html">TA Activity</a>
+    </div>
+    
+    <div class="container">
+        <!-- Left Section (Sentence Input & Results) -->
+        <div class="left-section">
+            <h2>Enter a Sentence</h2>
+            <textarea id="sentence" placeholder="Enter a sentence..."></textarea>
+            <button onclick="analyzeSentence()">Analyze</button>
+
+            <h2>Identified Elements</h2>
+            <div class="result-box" id="doer"> </div>
+            <div class="result-box" id="timeWord"> </div>
+            <div class="result-box" id="action"> </div>
+        </div>
+
+        <!-- Right Section (Final Result) -->
+        <div class="right-section">
+            <h2>Final Sentence Type</h2>
+            <div id="result-box">Sentence will appear here</div>
+            <button onclick="clearAll()" class="clear-btn">Clear All</button>
+
+            <!-- Sense Box & Clear Sense Button -->
+            <h2>Sense of Time Word</h2>
+            <div id="sense-box">Sense will appear here</div>
+            <button onclick="clearSense()" class="clear-btn">Clear Sense</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 Gaurav Chourasiya | Developed by Gaurav Chourasiya</p>
+    </footer>
+
+    <script>
+        // Define Doers, Time Words, and No-Action Words
+        const doers = ["I", "You", "We", "They", "He", "She", "It", "i", "you", "we", "they", "he", "she", "it"];
+        const timeWords = {
+            "do": "Life", "does": "Life", "did": "work done in Past", "can": "Power",
+            "may": "Possibility in Future", "must": "Possibility in Future", "might": "Possibility in Future",
+            "will": "Action in Future", "would": "Action in Future", "should": "Duty", "have been": "from then till now",
+            "could": "Power in Past", "have": "Work Finished", "has": "Work Finished", "has been": "from then till now",
+            "had": "Past of Past", "may have": "Possibility in Past", "might have": "Possibility in Past",
+            "must have": "Possibility in Past", "should have": "Duty in Past", "had been": "from Past of Past till Past",
+            "could have": "Power Realization in Past", "is": "Now", "am": "Now", "are": "Now",
+            "was": "Then (Past)", "were": "Then (Past)", "should be": "Duty now", "will be": "Future",
+        };
+    
+        const noActionWords = [ "Student" , "Teacher", "Teachers", "Engineer", "Engineers" , "Nurse", "Nurses" , "Pilot", "Chef", "Artist", "Singer", "Singers", "Dancer", "Dancers","Writer", "Writers", "Happy", "Sad", "Tired", "Weak", "Strong", "Brave", "Calm", "Honest", "Lazy", "Friendly", "Tall", "Short", "Soft", "Hard", "Warm", "Cold", "Rough", "Smooth", "Bright", "Dark", "Heavy", "Light", "Smart", "Dull", "Fast", "Slow", "Young", "Old", "Rich", "Poor", "Beautiful", "Ugly", "Kind", "Cruel", "Good", "Bad", "Polite", "Rude", "Busy", "Free",  "Dirty", "Anxious", "Arrogant", "Awkward", "Balanced", "Bitter", "Blind", "Blissful", "Bored", "Bright", "Cautious",
+"Charming", "Cheerful", "Clumsy", "Confident", "Confused", "Content", "Courageous", "Creative", "Curious", "Daring",
+"Defensive", "Delicate", "Determined", "Doubtful", "Eager", "Efficient", "Elegant", "Energetic", "Enthusiastic", "Famous",
+"Faithful", "Fearless", "Foolish", "Forgetful", "Generous", "Gentle", "Gloomy", "Grateful", "Greedy", "Handsome",
+"Harsh", "Hesitant", "Humble", "Humorous", "Ignorant", "Imaginative", "Impatient", "Independent", "Innocent", "Intelligent",
+"Jealous", "Jolly", "Lively", "Lonely", "Loyal", "Lucky", "Mature", "Miserable", "Modest", "Mysterious",
+"Nervous", "Notable", "Obedient", "Optimistic", "Organized", "Outstanding", "Patient", "Peaceful", "Persistent", "Popular",
+"Powerful", "Proud", "Quick-witted", "Realistic", "Reliable", "Resourceful", "Responsible", "Restless", "Sarcastic", "Selfish",
+"Sensible", "Serious", "Sharp", "Silly", "Sincere", "Sleepy", "Sociable", "Sophisticated", "Spontaneous", "Stubborn",
+"Sympathetic", "Tense", "Thoughtful", "Timid", "Trustworthy", "Uncertain", "Understanding", "Unforgiving", "Unique", "Witty", 
+"Doctor", "Lawyer", "Architect", "Scientist", "Pharmacist", "Veterinarian", "Dentist", "Journalist", 
+"Police Officer", "Firefighter", "Astronaut", "Judge", "Professor", "Psychologist", "Economist", 
+"Banker", "Electrician", "Plumber", "Mechanic", "Carpenter", "Welder", "Fashion Designer", 
+"Graphic Designer", "Photographer", "Filmmaker", "Animator", "Software Developer", "Data Scientist", 
+"Cybersecurity Analyst", "Civil Engineer", "Biomedical Engineer", "Marine Biologist", "Zoologist", 
+"Botanist", "Geologist", "Meteorologist", "Statistician", "Financial Analyst", "Investment Banker", 
+"Social Worker", "Counselor", "Therapist", "Translator", "Librarian", "Historian", "Archaeologist", 
+"Actor", "Choreographer", "Music Composer", "Radio Jockey", "News Anchor", "Event Planner", 
+"Air Traffic Controller", "Flight Attendant", "Surgeon", "Paramedic", "Phlebotomist", "Radiologist", 
+"Physiotherapist", "Ophthalmologist", "Dietitian", "Athlete", "Coach", "Referee", "Personal Trainer", 
+"Criminologist", "Forensic Scientist", "Military Officer", "Naval Officer", "Customs Officer", 
+"Politician", "Diplomat", "Entrepreneur", "Business Consultant", "Marketing Manager", 
+"Sales Executive", "Human Resource Manager", "Supply Chain Manager", "Tour Guide", "Hotel Manager", 
+"Chef de Cuisine", "Bartender", "Sommelier", "Baker", "Florist", "Jewelry Designer", 
+"Interior Designer", "Tattoo Artist", "Blacksmith", "Potter", "Weaver", "Game Developer", 
+"Ethical Hacker", "UX/UI Designer", "AI Engineer", "Robotics Engineer", "Drone Operator", 
+"Technical Writer", "Scientific Researcher", "Speech Therapist", "Yoga Instructor", "Astrologer", "Doctors", "Lawyers", "Architects", "Scientists", "Pharmacists", "Veterinarians", "Dentists", "Journalists", 
+"Police Officers", "Firefighters", "Astronauts", "Judges", "Professors", "Psychologists", "Economists", 
+"Bankers", "Electricians", "Plumbers", "Mechanics", "Carpenters", "Welders", "Fashion Designers", 
+"Graphic Designers", "Photographers", "Filmmakers", "Animators", "Software Developers", "Data Scientists", 
+"Cybersecurity Analysts", "Civil Engineers", "Biomedical Engineers", "Marine Biologists", "Zoologists", 
+"Botanists", "Geologists", "Meteorologists", "Statisticians", "Financial Analysts", "Investment Bankers", 
+"Social Workers", "Counselors", "Therapists", "Translators", "Librarians", "Historians", "Archaeologists", 
+"Actors", "Choreographers", "Music Composers", "Radio Jockeys", "News Anchors", "Event Planners", 
+"Air Traffic Controllers", "Flight Attendants", "Surgeons", "Paramedics", "Phlebotomists", "Radiologists", 
+"Physiotherapists", "Ophthalmologists", "Dietitians", "Athletes", "Coaches", "Referees", "Personal Trainers", 
+"Criminologists", "Forensic Scientists", "Military Officers", "Naval Officers", "Customs Officers", 
+"Politicians", "Diplomats", "Entrepreneurs", "Business Consultants", "Marketing Managers", 
+"Sales Executives", "Human Resource Managers", "Supply Chain Managers", "Tour Guides", "Hotel Managers",  
+"Chefs de Cuisine", "Bartenders", "Sommeliers", "Bakers", "Florists", "Jewelry Designers", 
+"Interior Designers", "Tattoo Artists", "Blacksmiths", "Potters", "Weavers", "Game Developers", 
+"Ethical Hackers", "UX/UI Designers", "AI Engineers", "Robotics Engineers", "Drone Operators", 
+"Technical Writers", "Scientific Researchers", "Speech Therapists", "Yoga Instructors", "Astrologers", "Magician",
+"Magician", "Clown", "Park Ranger", "Wildlife Photographer", "Fisherman", "Farmer", "Beekeeper", 
+"Landscape Architect", "Urban Planner", "Real Estate Agent", "Stockbroker", "Auctioneer", "Cryptographer", "Park Rangers", "Wildlife Photographers", "Fishermen", "Farmers", "Beekeepers", 
+"Landscape Architects", "Urban Planners", "Real Estate Agents", "Stockbrokers", "Auctioneers", "Cryptographers"
+,"Sunny", "Cloudy", "Rainy", "Stormy", "Windy", "Foggy", "Snowy", "Hazy", "Drizzling", "Thunderstorm", 
+"Humid", "Misty", "Overcast", "Chilly", "Freezing", "Icy", "Frosty", "Blizzard", "Drought", "Tornado", 
+"Heatwave", "Cyclone", "Hurricane", "Typhoon", "Dusty", "Muggy", "Sleet", "Hailstorm", "Lightning", "Hot" ,"Cold",
+"Gale", "Thunderous", "Dewy", "Gusty", "Balmy", "Scorching", "Sweltering", "Tropical", "Cool", "Breezy"
+];
+    
+        function analyzeSentence() {
+            let words = document.getElementById("sentence").value.trim().split(/\s+/);
+            let doer = "", timeWord = "", action = "", noAction = "";
+    
+            for (let i = 0; i < words.length; i++) {
+                let word = words[i];
+    
+                // Check for multi-word time expressions (e.g., "have been", "may have", "will be")
+                if (i + 1 < words.length) {
+                    let twoWordTime = word + " " + words[i + 1];
+                    if (timeWords[twoWordTime]) {
+                        timeWord = twoWordTime;
+                        i++; // Skip the next word since it's already used
+                        continue;
+                    }
+                }
+    
+                // Identify Doer (First Subject or Noun)
+                if (!doer && (doers.includes(word) || /^[A-Z][a-z]+$/.test(word))) {
+                    doer = word;
+                }
+    
+                // Identify Time Word
+                if (!timeWord && timeWords[word]) {
+                    timeWord = word;
+                }
+    
+                // Identify No-Action Word
+                if (noActionWords.includes(word)) {
+                    noAction = word;
+                }
+    
+                // Identify Action Word (if not already marked as no-action)
+                if (!noAction && !action && !doers.includes(word) && !timeWords[word]) {
+                    action = word;
+                }
+            }
+    
+            // Display results
+            document.getElementById("doer").innerText = "Doer: " + (doer || "Not found");
+            document.getElementById("timeWord").innerText = "Time Word: " + (timeWord || "Not found");
+            document.getElementById("action").innerText = "Action/No-Action: " + (action || noAction || "Not found");
+    
+            // Determine sentence type
+            if (noAction) {
+                document.getElementById("result-box").innerText = "No-Action Sentence";
+            } else {
+                document.getElementById("result-box").innerText = timeWord ? "Action Sentence" : "No-Action Sentence";
+            }
+    
+            document.getElementById("sense-box").innerText = timeWords[timeWord] || "Not Detected";
+        }
+    
+        function clearAll() {
+            document.getElementById("sentence").value = "";
+            document.getElementById("doer").innerText = "Doer: ";
+            document.getElementById("timeWord").innerText = "Time Word: ";
+            document.getElementById("action").innerText = "Action/No-Action: ";
+            document.getElementById("result-box").innerText = "Sentence will appear here";
+            clearSense();
+        }
+    
+        function clearSense() {
+            document.getElementById("sense-box").innerText = "Sense will appear here";
+        }
+    </script>
+</body>
+</htm
