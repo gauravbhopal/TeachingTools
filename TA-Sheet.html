@@ -4,65 +4,241 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TA Sheet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
-        body {
-            background-color: black;
-            color: gold;
-            font-family: Arial, sans-serif;
-            text-align: center;
+        :root {
+            --gold: #D4AF37;
+            --dark-gold: #A38A28;
+            --black: #121212;
+            --gray: #222;
+            --white: #F8F8F8;
+        }
+        
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+        
+        body {
+            background-color: var(--black);
+            color: var(--gold);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
         .navbar {
-            background-color: gold;
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
             padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
         }
+        
         .navbar a {
-            color: black;
+            color: var(--black);
             text-decoration: none;
-            font-size: 18px;
-            margin: 0 15px;
+            font-size: 17px;
+            margin: 8px 15px;
             font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
         }
+        
+        .navbar a:hover {
+            color: var(--white);
+        }
+        
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--black);
+            transition: width 0.3s ease;
+        }
+        
+        .navbar a:hover::after {
+            width: 100%;
+            background-color: var(--white);
+        }
+        
         .container {
-            padding: 20px;
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 3px;
+            background-color: var(--gold);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
         .section {
-            border: 2px solid gold;
-            margin: 20px auto;
-            padding: 15px;
-            width: 80%;
-            border-radius: 10px;
+            border: 2px solid var(--gold);
+            background-color: rgba(20, 20, 20, 0.7);
+            margin: 30px auto;
+            padding: 25px;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--gold);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 2px;
+            background-color: var(--gold);
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
         .table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 20px;
+            overflow: hidden;
+            border-radius: 8px;
         }
-        .table td, .table th {
-            border: 2px solid gold;
-            padding: 10px;
+        
+        .table th {
+            background: linear-gradient(to right, var(--gold), var(--dark-gold));
+            color: var(--black);
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .table td {
+            border: 1px solid var(--dark-gold);
+            padding: 12px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .table tr:nth-child(even) td {
+            background-color: rgba(40, 40, 40, 0.5);
+        }
+        
+        .table tr:hover td {
+            background-color: rgba(212, 175, 55, 0.15);
+        }
+        
+        .social-icons {
+            margin: 40px 0;
             text-align: center;
         }
-        .social-icons {
-            margin-top: 20px;
-        }
+        
         .social-icons a {
-            color: gold;
-            font-size: 24px;
-            margin: 0 10px;
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin: 0 15px;
             text-decoration: none;
-        }
-        .footer {
-            background-color: gold;
-            color: black;
+            display: inline-block;
+            transition: transform 0.3s ease, color 0.3s ease;
             padding: 10px;
+            border-radius: 50%;
+            background-color: rgba(40, 40, 40, 0.5);
+            width: 50px;
+            height: 50px;
+            line-height: 30px;
+        }
+        
+        .social-icons a:hover {
+            color: var(--white);
+            transform: translateY(-5px);
+            background-color: var(--dark-gold);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            color: var(--black);
+            padding: 20px;
+            text-align: center;
+            font-weight: bold;
             margin-top: 20px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .navbar a {
+                margin: 5px 0;
+            }
+            
+            .section {
+                padding: 15px;
+                width: 95%;
+            }
+            
+            .table th, .table td {
+                padding: 10px 5px;
+                font-size: 0.9rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="navbar">
+    <div class="navbar animate__animated animate__fadeInDown">
         <a href="index.html">Home</a>
         <a href="action.html">Action vs No-Action</a>
         <a href="ice-method.html">ICE Method</a>
@@ -72,9 +248,9 @@
     </div>
 
     <div class="container">
-        <h1>TA Sheet</h1>
+        <h1 class="animate__animated animate__fadeIn">TA Sheet</h1>
         
-        <div class="section">
+        <div class="section animate__animated animate__fadeInUp">
             <h2>TA 1</h2>
             <table class="table">
                 <tr><th>Time Words</th><th>Action Words</th></tr>
@@ -94,7 +270,7 @@
             </table>
         </div>
         
-        <div class="section">
+        <div class="section animate__animated animate__fadeInUp" style="animation-delay: 0.2s;">
             <h2>TA 2</h2>
             <table class="table">
                 <tr><th>Time Words</th><th>Action Words</th></tr>
@@ -111,7 +287,7 @@
             </table>
         </div>
         
-        <div class="section">
+        <div class="section animate__animated animate__fadeInUp" style="animation-delay: 0.4s;">
             <h2>TA 3</h2>
             <table class="table">
                 <tr><th>Time Words</th><th>Action Words</th></tr>
@@ -128,14 +304,37 @@
         </div>
     </div>
     
-    <div class="social-icons">
-        <a href="https://facebook.com/englishparadisegaurav" target="_blank">🔗 Facebook</a>
-        <a href="https://www.youtube.com/@gaurav0585/" target="_blank">🔗 Youtube</a>
-        <a href="https://instagram.com/gauravchourasiyaofficial" target="_blank">🔗 Instagram</a>
+    <div class="social-icons animate__animated animate__fadeIn" style="animation-delay: 0.6s;">
+        <a href="https://facebook.com/englishparadisegaurav" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.youtube.com/@gaurav0585/" target="_blank"><i class="fab fa-youtube"></i></a>
+        <a href="https://instagram.com/gauravchourasiyaofficial" target="_blank"><i class="fab fa-instagram"></i></a>
     </div>
     
-    <footer>
-        <p>© 2025 Gaurav Chourasiya | Developed by Gaurav Chourasiya</p>
+    <footer class="animate__animated animate__fadeIn" style="animation-delay: 0.8s;">
+        <p>Gaurav Chourasiya©2025  | Developed by Gaurav Chourasiya</p>
     </footer>
+
+    <script>
+        // Add subtle animation to tables on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        });
+    </script>
 </body>
 </html>

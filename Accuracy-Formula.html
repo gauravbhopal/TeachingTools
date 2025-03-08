@@ -5,111 +5,280 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accuracy Formula</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary-color: gold;
+            --bg-color: #121212;
+            --secondary-bg: #222;
+            --text-color: #fff;
+            --accent-color: #3a86ff;
+            --danger-color: #ff5a5f;
+            --success-color: #36b37e;
+        }
+        
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
         body {
-            background-color: #121212;
-            color: gold;
-            font-family: Arial, sans-serif;
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(255, 215, 0, 0.05) 5%, transparent 7%),
+                radial-gradient(circle at 75% 75%, rgba(255, 215, 0, 0.05) 5%, transparent 7%);
+            background-size: 60px 60px;
+            color: var(--primary-color);
+            font-family: 'Poppins', Arial, sans-serif;
             margin: 0;
             padding: 0;
             text-align: center;
+            line-height: 1.6;
         }
+        
         .navbar {
-            background-color: gold;
+            background: linear-gradient(135deg, var(--primary-color), #ffd700cc);
             padding: 15px;
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
+        
         .navbar a {
-            color: black;
+            color: #000;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 16px;
             margin: 0 15px;
-            font-weight: bold;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
         }
+        
+        .navbar a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #000;
+            transition: width 0.3s;
+        }
+        
+        .navbar a:hover::after {
+            width: 100%;
+        }
+        
+        h2 {
+            position: relative;
+            display: inline-block;
+            margin: 25px 0 15px;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            bottom: -5px;
+            left: 25%;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+        
         .container {
             display: flex;
             justify-content: space-between;
             width: 90%;
-            margin: auto;
+            max-width: 1200px;
+            margin: 20px auto;
             padding: 20px;
+            flex-wrap: wrap;
+            gap: 30px;
         }
+        
         .left-section, .right-section {
-            width: 45%;
+            flex: 1;
+            min-width: 300px;
+            backdrop-filter: blur(5px);
+            background-color: rgba(34, 34, 34, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-        textarea, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 18px;
-            border-radius: 5px;
-        }
+        
         textarea {
-            border: 2px solid gold;
-            background-color: #222;
-            color: white;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            background-color: var(--secondary-bg);
+            color: var(--text-color);
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Poppins', Arial, sans-serif;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
         }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
+        }
+        
         button {
-            background-color: gold;
-            color: black;
-            font-weight: bold;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            border-radius: 8px;
             border: none;
             cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
         }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        button:hover::before {
+            left: 100%;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .analyze-btn {
+            background: linear-gradient(45deg, var(--primary-color), #ffd700cc);
+            color: #000;
+        }
+        
         .result-box {
-            border: 2px solid gold;
+            border: 2px solid var(--primary-color);
             padding: 15px;
-            background-color: #222;
-            color: white;
-            margin: 10px 0;
-            font-size: 18px;
-            border-radius: 5px;
-            text-align: center;
+            background-color: var(--secondary-bg);
+            color: var(--text-color);
+            margin: 15px 0;
+            font-size: 16px;
+            border-radius: 8px;
+            text-align: left;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
         }
+        
+        .result-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+        }
+        
         #result-box {
-            border: 3px solid gold;
-            background-color: yellow;
-            color: green;
-            font-size: 28px;
+            border: 3px solid var(--primary-color);
+            background: linear-gradient(135deg, rgba(255, 255, 0, 0.9), rgba(255, 255, 0, 0.7));
+            color: #006400;
+            font-size: 24px;
             font-weight: bold;
-            padding: 20px;
-            min-width: 300px;
+            padding: 25px 20px;
             text-align: center;
             border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.5s;
         }
+        
+        #sense-box {
+            border: 3px solid var(--primary-color);
+            background: linear-gradient(135deg, rgba(255, 255, 0, 0.9), rgba(255, 255, 0, 0.7));
+            color: #000080;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 25px 20px;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            transition: all 0.5s;
+        }
+        
         .clear-btn {
             margin-top: 20px;
             padding: 12px 20px;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
-            background-color: red;
+            background: linear-gradient(45deg, var(--danger-color), #ff8082);
             color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
         }
+        
         .clear-btn:hover {
-            background-color: darkred;
+            background: linear-gradient(45deg, #ff8082, var(--danger-color));
         }
-        /* Sense Box Styling */
-        #sense-box {
-            border: 3px solid gold;
-            background-color: yellow;
-            color: blue;
-            font-size: 28px;
-            font-weight: bold;
-            padding: 20px;
-            min-width: 300px;
-            text-align: center;
-            border-radius: 10px;
-            margin-top: 10px;
-        }
+        
         .footer {
-            background-color: gold;
+            background: linear-gradient(135deg, var(--primary-color), #ffd700cc);
             color: black;
-            padding: 10px;
-            margin-top: 20px;
+            padding: 15px;
+            margin-top: 30px;
             text-align: center;
+            font-weight: 600;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .left-section, .right-section {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        #result-box.highlight, #sense-box.highlight {
+            animation: pulse 0.5s ease-out;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 95%;
+            }
+            
+            .navbar a {
+                margin: 0 8px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -129,25 +298,44 @@
         <!-- Left Section (Sentence Input & Results) -->
         <div class="left-section">
             <h2>Enter a Sentence</h2>
-            <textarea id="sentence" placeholder="Enter a sentence..."></textarea>
-            <button onclick="analyzeSentence()">Analyze</button>
+            <textarea id="sentence" placeholder="Enter a sentence to analyze..."></textarea>
+            <button onclick="analyzeSentence()" class="analyze-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                Analyze
+            </button>
 
             <h2>Identified Elements</h2>
-            <div class="result-box" id="doer"> </div>
-            <div class="result-box" id="timeWord"> </div>
-            <div class="result-box" id="action"> </div>
+            <div class="result-box" id="doer"></div>
+            <div class="result-box" id="timeWord"></div>
+            <div class="result-box" id="action"></div>
         </div>
 
         <!-- Right Section (Final Result) -->
         <div class="right-section">
             <h2>Final Sentence Type</h2>
             <div id="result-box">Sentence will appear here</div>
-            <button onclick="clearAll()" class="clear-btn">Clear All</button>
+            <button onclick="clearAll()" class="clear-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                Clear All
+            </button>
 
             <!-- Sense Box & Clear Sense Button -->
             <h2>Sense of Time Word</h2>
             <div id="sense-box">Sense will appear here</div>
-            <button onclick="clearSense()" class="clear-btn">Clear Sense</button>
+            <button onclick="clearSense()" class="clear-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+                Clear Sense
+            </button>
         </div>
     </div>
 
@@ -160,7 +348,7 @@
         // Define Doers, Time Words, and No-Action Words
         const doers = ["I", "You", "We", "They", "He", "She", "It", "i", "you", "we", "they", "he", "she", "it"];
         const timeWords = {
-            "do": "Life", "does": "Life", "did": "work done in Past", "can": "Power",
+            "do": "Life", "does": "Life", "did": "work done in Past", "can": "Power", "can be": "Power",
             "may": "Possibility in Future", "must": "Possibility in Future", "might": "Possibility in Future",
             "will": "Action in Future", "would": "Action in Future", "should": "Duty", "have been": "from then till now",
             "could": "Power in Past", "have": "Work Finished", "has": "Work Finished", "has been": "from then till now",
@@ -260,33 +448,74 @@
                 }
             }
     
-            // Display results
-            document.getElementById("doer").innerText = "Doer: " + (doer || "Not found");
-            document.getElementById("timeWord").innerText = "Time Word: " + (timeWord || "Not found");
-            document.getElementById("action").innerText = "Action/No-Action: " + (action || noAction || "Not found");
+            // Display results with fade-in effect
+            updateElement("doer", "Doer: " + (doer || "Not found"));
+            updateElement("timeWord", "Time Word: " + (timeWord || "Not found"));
+            updateElement("action", "Action/No-Action: " + (action || noAction || "Not found"));
     
-            // Determine sentence type
-            if (noAction) {
-                document.getElementById("result-box").innerText = "No-Action Sentence";
-            } else {
-                document.getElementById("result-box").innerText = timeWord ? "Action Sentence" : "No-Action Sentence";
+            // Determine sentence type with animation
+            const resultBox = document.getElementById("result-box");
+            const prevContent = resultBox.innerText;
+            const newContent = noAction ? "No-Action Sentence" : (timeWord ? "Action Sentence" : "No-Action Sentence");
+            
+            resultBox.innerText = newContent;
+            if (prevContent !== newContent) {
+                resultBox.classList.remove("highlight");
+                void resultBox.offsetWidth; // Trigger reflow
+                resultBox.classList.add("highlight");
             }
     
-            document.getElementById("sense-box").innerText = timeWords[timeWord] || "Not Detected";
+            // Update sense box with animation
+            const senseBox = document.getElementById("sense-box");
+            const prevSense = senseBox.innerText;
+            const newSense = timeWords[timeWord] || "Not Detected";
+            
+            senseBox.innerText = newSense;
+            if (prevSense !== newSense) {
+                senseBox.classList.remove("highlight");
+                void senseBox.offsetWidth; // Trigger reflow
+                senseBox.classList.add("highlight");
+            }
+        }
+        
+        function updateElement(id, text) {
+            const element = document.getElementById(id);
+            element.style.opacity = "0";
+            setTimeout(() => {
+                element.innerText = text;
+                element.style.opacity = "1";
+            }, 150);
         }
     
         function clearAll() {
             document.getElementById("sentence").value = "";
-            document.getElementById("doer").innerText = "Doer: ";
-            document.getElementById("timeWord").innerText = "Time Word: ";
-            document.getElementById("action").innerText = "Action/No-Action: ";
-            document.getElementById("result-box").innerText = "Sentence will appear here";
+            
+            // Clear with fade effect
+            updateElement("doer", "Doer: ");
+            updateElement("timeWord", "Time Word: ");
+            updateElement("action", "Action/No-Action: ");
+            
+            const resultBox = document.getElementById("result-box");
+            resultBox.classList.remove("highlight");
+            void resultBox.offsetWidth;
+            resultBox.innerText = "Sentence will appear here";
+            
             clearSense();
         }
     
         function clearSense() {
-            document.getElementById("sense-box").innerText = "Sense will appear here";
+            const senseBox = document.getElementById("sense-box");
+            senseBox.classList.remove("highlight");
+            void senseBox.offsetWidth;
+            senseBox.innerText = "Sense will appear here";
+        }
+        
+        // Initialize empty fields
+        window.onload = function() {
+            document.getElementById("doer").innerText = "Doer: ";
+            document.getElementById("timeWord").innerText = "Time Word: ";
+            document.getElementById("action").innerText = "Action/No-Action: ";
         }
     </script>
 </body>
-</htm
+</html>
